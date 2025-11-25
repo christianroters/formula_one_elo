@@ -100,7 +100,7 @@ def elo_season(
                 ratings_over_time.at[race_id, driver] = np.nan  # or None
 
     ratings_over_time.index.name = "race_id"
-    ratings_over_time.to_csv(f"elo_ratings_over_time_{year}.csv")
+    ratings_over_time.to_csv(f"data/elo_ratings_over_time_{year}.csv")
     return ratings_over_time
 
 

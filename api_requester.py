@@ -1,8 +1,6 @@
 import os
 import pandas as pd
-import numpy as np
 import requests
-import time
 
 # Collection of methods to make API requests and process the data
 

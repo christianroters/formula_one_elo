@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 from elo_calc import elo_season_range
 from api_requester import active_drivers, driver_get_results
 from plotly import graph_objects as go
