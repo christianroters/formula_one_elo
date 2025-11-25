@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from api_requester import active_drivers, driver_get_results
+from elo_engine.api_requester import active_drivers, driver_get_results
 
 
 def calculate_elo(rating_a: float, rating_b: float, k: float, outcome: float) -> tuple:
