@@ -1,0 +1,47 @@
+repos:
+  # 1. The Basics (Official pre-commit hooks)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  # 2. Secret Scanning (Never leak an API key again)
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  # 3. Spell Checker (Blazingly fast Rust-based typo catcher)
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.29.4
+    hooks:
+      - id: typos
+
+  # 4. Ruff (Linting & Formatting by Astral)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.7
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+
+  # 5. ty (Static Type Checking by Astral)
+  - repo: local
+    hooks:
+      - id: ty
+        name: ty type checker
+        entry: uv run ty check
+        language: system
+        types: [python]
+        pass_filenames: true
+
+  # 6. Commitizen (Commit Message Standardization)
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.13.9
+    hooks:
+      - id: commitizen

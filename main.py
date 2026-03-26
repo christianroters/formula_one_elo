@@ -1,5 +1,5 @@
 from elo_calc import elo_season_range
-from api_requester import active_drivers, driver_get_results
+from api_requester import active_drivers
 from plotly import graph_objects as go
 
 
@@ -36,7 +36,7 @@ def main():
             )
         )
     fig.update_layout(
-        title=f"Elo Ratings of F1 Drivers in ",
+        title="Elo Ratings of F1 Drivers in ",
         xaxis_title="Race ID",
         yaxis_title="Elo Rating",
     )

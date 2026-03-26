@@ -8,5 +8,27 @@ dependencies = [
     "numpy~=2.3",
     "pandas~=2.3",
     "plotly~=5.15",
+    "plotly-stubs>=0.1.2",
     "requests~=2.31",
 ]
+
+[dependency-groups]
+dev = [
+    "pandas-stubs>=3.0.0.260204",
+    "pre-commit>=4.5.1",
+    "ty>=0.0.25",
+]
+
+[tool.typos.files]
+# Tell typos to completely ignore these files or directories
+extend-exclude = [
+    "data/",
+    "tests/fixtures/",
+    "*.csv"
+]
+
+[tool.typos.default.extend-words]
+# Tell typos that these specific "misspellings" are actually valid words in your project
+# The format is: "typo" = "typo" (meaning "treat this exact string as correct")
+reccomend = "reccomend"
+myweirdacronym = "myweirdacronym"

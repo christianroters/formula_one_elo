@@ -6,7 +6,9 @@ import pandas as pd
 from api_requester import active_drivers, driver_get_results
 
 
-def calculate_elo(rating_a: float, rating_b: float, k: float, outcome: float) -> tuple:
+def calculate_elo(
+    rating_a: float, rating_b: float, k: float, outcome: float
+) -> tuple[float, float]:
     """Calculates new Elo ratings for two competitors after a match.
 
     Args:
@@ -28,11 +30,11 @@ def calculate_elo(rating_a: float, rating_b: float, k: float, outcome: float) ->
 
 
 def elo_season(
-    drivers: list,
+    drivers: list[str],
     year: int,
     initial_rating: float = 1000,
     k: float = 32,
-    initial_ratings: dict = None,  # <-- add this
+    initial_ratings: dict[str, float] | None = None,
 ) -> pd.DataFrame:
     """Calculates Elo ratings for a list of drivers over a season.
 
@@ -62,7 +64,7 @@ def elo_season(
         results_per_driver[driver] = driver_get_results(driver, year)
 
     # Use the first driver's results to get the race order
-    race_order = list(results_per_driver[drivers[0]]["race"])
+    race_order = results_per_driver[drivers[0]]["race"]
 
     # DataFrame to store ratings after each race
     ratings_over_time = pd.DataFrame(index=race_order, columns=drivers, dtype=float)
@@ -104,7 +106,7 @@ def elo_season(
     return ratings_over_time
 
 
-def elo_season_range(start_year: int, end_year: int) -> None:
+def elo_season_range(start_year: int, end_year: int) -> pd.DataFrame:
     """Calculates Elo ratings for multiple seasons.
 
     Args:
@@ -114,9 +116,13 @@ def elo_season_range(start_year: int, end_year: int) -> None:
     range_elo = pd.DataFrame()
     for year in range(start_year, end_year + 1):
         drivers = active_drivers(year)
-        if os.path.exists(f"data/elo_ratings_over_time_{year-1}.csv"):
-            print(f"Using previous ratings for {year} from {year-1} as initial ratings.")
-            previous_year_elo = pd.read_csv(f"data/elo_ratings_over_time_{year-1}.csv")
+        if os.path.exists(f"data/elo_ratings_over_time_{year - 1}.csv"):
+            print(
+                f"Using previous ratings for {year} from {year - 1} as initial ratings."
+            )
+            previous_year_elo = pd.read_csv(
+                f"data/elo_ratings_over_time_{year - 1}.csv"
+            )
             initial_ratings = {
                 driver: previous_year_elo[driver].dropna().values[-1]
                 for driver in drivers
