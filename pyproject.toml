@@ -1,0 +1,12 @@
+[project]
+name = "formula-one-elo"
+version = "0.1.0"
+description = "Tool to calculate ELO ratings for Formula One drivers."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy~=2.3",
+    "pandas~=2.3",
+    "plotly~=5.15",
+    "requests~=2.31",
+]
