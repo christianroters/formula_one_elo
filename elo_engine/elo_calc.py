@@ -1,4 +1,5 @@
 import itertools
+import logging
 import os
 import numpy as np
 import pandas as pd
@@ -47,17 +48,19 @@ def elo_season(
         pd.DataFrame: DataFrame containing Elo ratings for each driver after the season.
     """
     # Initialize DataFrame to hold ratings
-    if os.path.exists(f"elo_ratings_over_time_{year}.csv"):
-        return pd.read_csv(f"elo_ratings_over_time_{year}.csv").set_index("race_id")
+    if os.path.exists(f"data/elo_ratings_over_time_{year}.csv"):
+        logging.info(f"Using cached Elo ratings for {year}.")
+        return pd.read_csv(f"data/elo_ratings_over_time_{year}.csv").set_index(
+            "race_id"
+        )
     unique_matchups = list(itertools.combinations(drivers, 2))
     # Use initial_ratings dict if provided, else use initial_rating for all
     if initial_ratings is not None:
         current_ratings = {
-            driver: float(initial_ratings.get(driver, initial_rating))
-            for driver in drivers
+            driver: initial_ratings.get(driver, initial_rating) for driver in drivers
         }
     else:
-        current_ratings = {driver: float(initial_rating) for driver in drivers}
+        current_ratings = {driver: initial_rating for driver in drivers}
 
     results_per_driver = {}
     for driver in drivers:
@@ -85,10 +88,8 @@ def elo_season(
                 else:
                     outcome = 0.5
 
-                rating_a = current_ratings[driver_a]
-                rating_b = current_ratings[driver_b]
                 new_rating_a, new_rating_b = calculate_elo(
-                    rating_a, rating_b, k, outcome
+                    current_ratings[driver_a], current_ratings[driver_b], k, outcome
                 )
                 current_ratings[driver_a] = new_rating_a
                 current_ratings[driver_b] = new_rating_b
@@ -115,9 +116,20 @@ def elo_season_range(start_year: int, end_year: int) -> pd.DataFrame:
     """
     range_elo = pd.DataFrame()
     for year in range(start_year, end_year + 1):
+        # Skip if already calculated to avoid unnecessary API calls
+        if os.path.exists(f"data/elo_ratings_over_time_{year}.csv"):
+            logging.info(
+                f"Elo ratings for {year} already calculated, skipping API calls."
+            )
+            cached = pd.read_csv(f"data/elo_ratings_over_time_{year}.csv").set_index(
+                "race_id"
+            )
+            range_elo = pd.concat([range_elo, cached])
+            continue
+
         drivers = active_drivers(year)
         if os.path.exists(f"data/elo_ratings_over_time_{year - 1}.csv"):
-            print(
+            logging.info(
                 f"Using previous ratings for {year} from {year - 1} as initial ratings."
             )
             previous_year_elo = pd.read_csv(

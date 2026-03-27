@@ -7,7 +7,6 @@ The calculation checks for any cached data, like active drivers, and elo_ratings
 After the calculation the requested seasons are plotted, with all drivers displayed that participated in these seasons.
 
 ## Future Work
-- Check request amount and optimize
 - Make usage more intuitiv
 - Optimize calculation
 - Offer more visualization capabilities.
