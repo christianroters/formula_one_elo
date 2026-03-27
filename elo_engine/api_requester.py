@@ -12,7 +12,7 @@ def all_drivers() -> None:
     response = requests.get(url)
     data = response.json()
     driver_df = pd.DataFrame(data=data["drivers"])
-    driver_df["driverId"].to_csv("driver_ids.csv", index=False)
+    driver_df["driverId"].to_csv("data/driver_ids.csv", index=False)
 
 
 def active_drivers(year: int) -> list:

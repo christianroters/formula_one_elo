@@ -5,6 +5,9 @@ description = "Tool to calculate ELO ratings for Formula One drivers."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "dash>=4.1.0",
+    "dash-bootstrap-components>=2.0.4",
+    "datetime>=6.0",
     "logging>=0.4.9.6",
     "numpy~=2.3",
     "pandas~=2.3",
